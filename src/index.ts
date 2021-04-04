@@ -1,3 +1,3 @@
-import Snake from "games/snake";
+import SnakeGame from "games/snake";
 
-new Snake();
+new SnakeGame();
