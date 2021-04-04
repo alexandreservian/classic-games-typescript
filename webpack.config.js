@@ -12,6 +12,7 @@ module.exports = {
 		],
 	},
 	resolve: {
+		modules: [__dirname + "/src", __dirname + "/node_modules"],
 		extensions: [".ts", ".js"],
 	},
 	devtool: "eval-source-map",
@@ -24,5 +25,14 @@ module.exports = {
 			filename: "index.html",
 			template: "src/index.html",
 		}),
+		new HtmlWebpackPlugin({
+			filename: "games/snake/index.html",
+			template: "src/games/snake/index.html",
+		}),
 	],
+	devServer: {
+		proxy: {
+			"/api": "http://localhost:8080",
+		},
+	},
 };
