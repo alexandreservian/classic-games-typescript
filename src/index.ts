@@ -1,3 +1,9 @@
 import SnakeGame from "games/snake";
 
-new SnakeGame();
+const snakeGame = new SnakeGame();
+
+snakeGame.main();
+
+snakeGame.pause();
+
+//snakeGame.start();
