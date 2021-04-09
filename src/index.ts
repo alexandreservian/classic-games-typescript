@@ -4,6 +4,6 @@ const snakeGame = new SnakeGame();
 
 snakeGame.main();
 
-snakeGame.pause();
+//snakeGame.pause();
 
 //snakeGame.start();

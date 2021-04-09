@@ -8,6 +8,7 @@ class SnakeGame {
 	private isStartedAnimation: boolean = true;
 	private lastUpdatedFrame: number = 0;
 	private deltaTime: number = 0;
+	private animationFrameLoop: number = 0;
 	readonly sizeCanvas: number = 450;
 	readonly square: number = 9;
 	readonly frameDuration: number = 1000 / 60;
@@ -31,17 +32,15 @@ class SnakeGame {
 	}
 
 	private setDeltaTime(timestamp: number): void {
-		this.deltaTime = (timestamp - this.lastUpdatedFrame) / this.frameDuration;
-		console.log(this.deltaTime);
+		const deltaTime = (timestamp - this.lastUpdatedFrame) / this.frameDuration;
+		this.deltaTime = Math.round(deltaTime);
 		this.lastUpdatedFrame = timestamp;
 	}
 
 	private frame(): void {
-		requestAnimationFrame((timestamp: number) => {
+		this.animationFrameLoop = requestAnimationFrame((timestamp: number) => {
 			this.setDeltaTime(timestamp);
-			if (this.isStartedAnimation) {
-				this.frame();
-			}
+			this.frame();
 		});
 	}
 
@@ -53,11 +52,15 @@ class SnakeGame {
 	}
 
 	public start(): void {
-		this.isStartedAnimation = true;
+		if (!this.isStartedAnimation) {
+			this.isStartedAnimation = true;
+			this.frame();
+		}
 	}
 
 	public pause(): void {
 		this.isStartedAnimation = false;
+		cancelAnimationFrame(this.animationFrameLoop);
 	}
 }
 
