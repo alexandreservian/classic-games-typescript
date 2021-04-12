@@ -45,13 +45,13 @@ class SnakeGame {
 	}
 
 	private updateMeterFps(): void {
-		if (this.rangeTimer > 0.25) {
+		if (this.rangeTimer > 250) {
 			const fps: number = Math.trunc(1000 / this.frameRate);
 			const frameRate: number = parseFloat(this.frameRate.toFixed(2));
 			this.meterFps.draw(fps, frameRate);
 			this.rangeTimer = 0;
 		} else {
-			this.rangeTimer += this.frameRate / 1000;
+			this.rangeTimer += this.frameRate;
 		}
 	}
 
