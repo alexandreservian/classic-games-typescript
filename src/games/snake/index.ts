@@ -4,7 +4,7 @@ import Snake from "./src/snake";
 
 class SnakeGame extends Engine {
 	private snake: Snake;
-	private readonly square: number = 9;
+	private readonly square: number = 3;
 
 	constructor() {
 		super();

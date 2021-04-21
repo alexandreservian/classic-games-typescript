@@ -88,6 +88,19 @@ class DoublyLinkedList<T> {
 	public isEmpty(): boolean {
 		return this.length === 0;
 	}
+
+	public forEach(callback: (element: T) => void): void {
+		if (!this.head) {
+			return undefined;
+		}
+		let count = 0;
+		let current: Node<T> = this.head;
+		while (count < this.size()) {
+			callback(current.getElement());
+			current = current.getNext() as Node<T>;
+			count++;
+		}
+	}
 }
 
 export default DoublyLinkedList;

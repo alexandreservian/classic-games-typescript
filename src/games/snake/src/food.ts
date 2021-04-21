@@ -3,48 +3,38 @@ class Food {
 
 	constructor(
 		context: CanvasRenderingContext2D,
-		xAxis: number,
-		yAxis: number,
+		x: number,
+		y: number,
 		square: number
 	) {
 		this.context = context;
 
-		const positions: Array<Array<number>> = this.createPositions(
-			xAxis,
-			yAxis,
-			square
-		);
-		this.draw(positions);
+		const positions: Array<Array<number>> = this.createPositions(x, y, square);
+		this.draw(positions, square);
 	}
 
 	private createPositions(
-		xAxis: number,
-		yAxis: number,
+		x: number,
+		y: number,
 		square: number
 	): Array<Array<number>> {
-		const absoluteXaxis = square * xAxis;
-		const absoluteYaxis = square * yAxis;
+		const absoluteX = square * x;
+		const absoluteY = square * y;
 
 		return [
-			[absoluteXaxis + 3, absoluteYaxis + 0],
-			[absoluteXaxis, absoluteYaxis + 3],
-			[absoluteXaxis + 6, absoluteYaxis + 3],
-			[absoluteXaxis + 3, absoluteYaxis + 6],
+			[absoluteX + 3, absoluteY + 0],
+			[absoluteX, absoluteY + 3],
+			[absoluteX + 6, absoluteY + 3],
+			[absoluteX + 3, absoluteY + 6],
 		];
 	}
 
-	private draw(positions: Array<Array<number>>): void {
+	private draw(positions: Array<Array<number>>, square: number): void {
 		const lenPositions: number = positions.length;
-		const sizeBlockFood: number = 3;
 		this.context.fillStyle = "#000";
 
 		for (let y = 0; y < lenPositions; y++) {
-			this.context.fillRect(
-				positions[y][0],
-				positions[y][1],
-				sizeBlockFood,
-				sizeBlockFood
-			);
+			this.context.fillRect(positions[y][0], positions[y][1], square, square);
 		}
 	}
 }
