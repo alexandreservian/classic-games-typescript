@@ -7,6 +7,8 @@ abstract class Engine {
 	private animationFrameLoop: number = 0;
 	private meterFps: MeterFps;
 	private rangeTimer: number = 0;
+	private lastFps: number = 0;
+	private lastFrameRate: number = 0;
 	private canvas: HTMLCanvasElement;
 	protected context: CanvasRenderingContext2D;
 	protected deltaTime: number = 0;
@@ -20,7 +22,13 @@ abstract class Engine {
 		this.canvas.setAttribute("width", size);
 		this.canvas.setAttribute("height", size);
 
-		this.meterFps = new MeterFps(this.context);
+		this.meterFps = new MeterFps(
+			this.context,
+			this.sizeCanvas,
+			this.sizeCanvas,
+			this.sizeCanvas,
+			this.sizeCanvas
+		);
 	}
 
 	private setDeltaTime(timestamp: number): void {
@@ -31,13 +39,13 @@ abstract class Engine {
 
 	private updateMeterFps(): void {
 		if (this.rangeTimer > 250) {
-			const fps: number = Math.trunc(1000 / this.frameRate);
-			const frameRate: number = parseFloat(this.frameRate.toFixed(2));
-			this.meterFps.draw(fps, frameRate);
+			this.lastFps = Math.trunc(1000 / this.frameRate);
+			this.lastFrameRate = parseFloat(this.frameRate.toFixed(2));
 			this.rangeTimer = 0;
 		} else {
 			this.rangeTimer += this.frameRate;
 		}
+		this.meterFps.draw(this.lastFps, this.lastFrameRate);
 	}
 
 	private frame(): void {

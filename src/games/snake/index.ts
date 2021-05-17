@@ -8,9 +8,18 @@ class SnakeGame extends Engine {
 
 	constructor() {
 		super();
-		this.setBackground();
+		const centerScreen = this.sizeCanvas / 2 - this.square;
 		new Food(this.context, 35, 23, this.square);
-		this.snake = new Snake(this.context, 18, 24, this.square);
+		this.snake = new Snake(
+			this.context,
+			centerScreen,
+			centerScreen,
+			this.square,
+			450,
+			450,
+			450,
+			450
+		);
 	}
 
 	private setBackground(): void {
@@ -18,7 +27,10 @@ class SnakeGame extends Engine {
 		this.context.fillRect(0, 0, this.sizeCanvas, this.sizeCanvas);
 	}
 
-	protected update(): void {}
+	protected update(): void {
+		this.setBackground();
+		this.snake.update(1, 0);
+	}
 }
 
 export default SnakeGame;
