@@ -1,5 +1,3 @@
-import DoublyLinkedList from "utils/doubly-linked-list";
-
 enum DirectionX {
 	default = 0,
 	Right = 1,
@@ -15,17 +13,18 @@ enum DirectionY {
 type DetailsBody = {
 	x: number;
 	y: number;
+	width: number;
 };
 
 class Snake {
 	private context: CanvasRenderingContext2D;
 	private canvasLayer: HTMLCanvasElement;
 	private contextLayer: CanvasRenderingContext2D;
-	private body: DoublyLinkedList<DetailsBody>;
 	private square: number;
-	private velocity: number = 1;
-	private lastX: number;
-	private lastY: number;
+	private headX: number;
+	private headY: number;
+	private tailX: number;
+	private tailY: number;
 	private widthCanvas: number;
 	private heightCanvas: number;
 	private widthLayer: number;
@@ -53,42 +52,19 @@ class Snake {
 		this.heightLayer = heightLayer;
 		this.context = context;
 		this.square = Math.pow(square, 2);
-		this.lastX = initialX;
-		this.lastY = initialY;
-		this.body = this.createBody(initialX, initialY);
-		this.drawBody(this.body);
+		this.headX = initialX + this.square * 3;
+		this.headY = initialY;
+		this.tailX = initialX;
+		this.tailY = initialY;
+		this.drawBody(initialX, initialY, this.square * 3);
 	}
 
-	private createBody(
-		initialX: number,
-		initialY: number
-	): DoublyLinkedList<DetailsBody> {
-		const xBase: number = initialX;
-		const yBase: number = initialY;
-		const doublyLinkedList = new DoublyLinkedList<DetailsBody>();
-		doublyLinkedList.push({
-			x: xBase,
-			y: yBase,
-		});
-		doublyLinkedList.push({
-			x: xBase - this.square,
-			y: yBase,
-		});
-		doublyLinkedList.push({
-			x: xBase - this.square * 2,
-			y: yBase,
-		});
-		return doublyLinkedList;
+	private drawBody(initialX: number, initialY: number, width: number): void {
+		this.draw(initialX, initialY, width);
 	}
 
-	private drawBody(body: DoublyLinkedList<DetailsBody>): void {
-		body.forEach((element: DetailsBody) => {
-			this.draw(element.x, element.y);
-		});
-	}
-
-	private draw(x: number, y: number): void {
-		this.contextLayer.fillRect(x, y, this.square, this.square);
+	private draw(x: number, y: number, width: number): void {
+		this.contextLayer.fillRect(x, y, width, this.square);
 		this.context.drawImage(
 			this.canvasLayer,
 			0,
@@ -98,18 +74,24 @@ class Snake {
 		);
 	}
 
-	private clear(x: number, y: number): void {
-		this.contextLayer.clearRect(x, y, this.square, this.square);
+	private clear(x: number, y: number, width: number): void {
+		this.contextLayer.clearRect(x, y, width, this.square);
 	}
 
-	public update(directionX: DirectionX, directionY: DirectionY): void {
-		this.lastX = this.lastX + this.square * directionX;
-		this.lastY = this.lastY + this.square * directionY;
-		this.body.unshift({ x: this.lastX, y: this.lastY });
-		const lastBodyPart = this.body.pop() as DetailsBody;
+	public update(
+		directionX: DirectionX,
+		directionY: DirectionY,
+		velocity: number
+	): void {
+		const headX = this.headX;
+		const headY = this.headY;
+		const tailX = this.tailX;
+		this.headX = this.headX + velocity * directionX;
+		this.headY = this.headY + velocity * directionY;
+		this.tailX = this.tailX + velocity * directionX;
 
-		this.clear(lastBodyPart.x, lastBodyPart.y);
-		this.draw(this.lastX, this.lastY);
+		this.clear(tailX, headY, velocity);
+		this.draw(headX, headY, velocity);
 	}
 }
 
