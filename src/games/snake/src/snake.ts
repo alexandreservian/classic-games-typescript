@@ -1,21 +1,3 @@
-enum DirectionX {
-	default = 0,
-	Right = 1,
-	Left = -1,
-}
-
-enum DirectionY {
-	default = 0,
-	Down = 1,
-	Up = -1,
-}
-
-type DetailsBody = {
-	x: number;
-	y: number;
-	width: number;
-};
-
 class Snake {
 	private context: CanvasRenderingContext2D;
 	private canvasLayer: HTMLCanvasElement;
@@ -53,7 +35,7 @@ class Snake {
 		this.context = context;
 		this.square = Math.pow(square, 2);
 		this.headX = initialX + this.square * 3;
-		this.headY = initialY;
+		this.headY = initialY + this.square * 3;
 		this.tailX = initialX;
 		this.tailY = initialY;
 		this.drawBody(initialX, initialY, this.square * 3);
@@ -79,8 +61,8 @@ class Snake {
 	}
 
 	public update(
-		directionX: DirectionX,
-		directionY: DirectionY,
+		directionX: number,
+		directionY: number,
 		velocity: number
 	): void {
 		const headX = this.headX;
